@@ -24,6 +24,7 @@ jobs:
 
     - name: Run Katana Docker
       id: run_katana
+      timeout-minutes: 5
       run: |
         docker run --rm -v $PWD:/katana projectdiscovery/katana:latest -u ${{ github.event.inputs.url }} store > result.txt
 
