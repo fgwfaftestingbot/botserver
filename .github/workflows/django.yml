@@ -1,0 +1,32 @@
+name: Katana Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'URL to be checked'
+        required: true
+
+jobs:
+  katana_job:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: Check URL
+      id: check_url
+      run: |
+        if [[ ! ${{ github.event.inputs.url }} =~ ^https?:// ]]; then
+          echo "Invalid URL provided."
+          exit 1
+        fi
+
+    - name: Run Katana Docker
+      id: run_katana
+      run: |
+        docker run --rm -v $PWD:/katana projectdiscovery/katana:latest -u ${{ github.event.inputs.url }} store > result.txt
+
+    - name: Display Results
+      id: display_results
+      run: |
+        cat result.txt
