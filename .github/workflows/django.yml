@@ -16,7 +16,8 @@ jobs:
     - name: Check URL
       id: check_url
       run: |
-        if [[ ! ${{ github.event.inputs.url }} =~ ^https?:// ]]; then
+        url=${{ github.event.inputs.url }}
+        if [[ ! $url =~ ^https?:// ]]; then
           echo "Invalid URL provided."
           exit 1
         fi
